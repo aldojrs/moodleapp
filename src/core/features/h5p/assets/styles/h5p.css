@@ -48,6 +48,17 @@ html.h5p-iframe .h5p-fullscreen .h5p-content,
 html.h5p-iframe .h5p-semi-fullscreen .h5p-content {
   height: 100%;
 }
+html.h5p-iframe .h5p-fullscreen-ios .h5p-content {
+  position: absolute;
+  transform: rotate(90deg);
+  transform-origin: bottom left;
+  width: 100vh !important;
+  height: 100vw !important;
+  margin-top: -100vw;
+  object-fit: cover;
+  z-index: 4;
+  visibility: visible;
+}
 .h5p-content.h5p-no-frame,
 .h5p-fullscreen .h5p-content,
 .h5p-semi-fullscreen .h5p-content {

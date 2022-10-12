@@ -13,6 +13,17 @@
     z-index: 9999;
 }
 
+iframe {
+    width: 100% !important;
+}
+
+.iframetop {
+    z-index: 20;
+    position: absolute;
+    top: 45px;
+    height: calc(100vh - 5%) !important;
+}
+
 :host-context(.limited-width > :not([slot])) {
     display: flex;
     flex-direction: column;

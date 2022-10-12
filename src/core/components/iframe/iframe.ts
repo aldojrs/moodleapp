@@ -162,6 +162,18 @@ export class CoreIframeComponent implements OnChanges, OnDestroy {
                 this.init();
             });
         }
+
+        window.addEventListener('message', event => {
+            if (event.data == 'enterFullScreen') {
+                document.getElementsByTagName('core-course-module-navigation')[0].setAttribute('style', 'display:none;');
+                document.querySelectorAll('.collapsible-header-collapsed')[0].setAttribute('style', 'display:none;');
+                this.iframe?.nativeElement.classList.add('iframetop');
+            } else if (event.data == 'exitFullScreen'){
+                document.getElementsByTagName('core-course-module-navigation')[0].setAttribute('style', 'display:block;');
+                document.querySelectorAll('.collapsible-header-collapsed')[0].setAttribute('style', 'display:block;');
+                this.iframe?.nativeElement.classList.remove('iframetop');
+            }
+        });
     }
 
     /**

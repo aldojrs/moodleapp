@@ -587,7 +587,7 @@ H5P.fullScreen = function ($element, instance, exitCallback, body, forceSemiFull
   };
 
   H5P.isFullscreen = true;
-  if (H5P.fullScreenBrowserPrefix === undefined || forceSemiFullScreen === true) {
+  if (forceSemiFullScreen === true) {
     // Create semi fullscreen.
 
     if (H5P.isFramed) {
@@ -666,7 +666,13 @@ H5P.fullScreen = function ($element, instance, exitCallback, body, forceSemiFull
     else {
       var method = (H5P.fullScreenBrowserPrefix === 'ms' ? 'msRequestFullscreen' : H5P.fullScreenBrowserPrefix + 'RequestFullScreen');
       var params = (H5P.fullScreenBrowserPrefix === 'webkit' && H5P.safariBrowser === 0 ? Element.ALLOW_KEYBOARD_INPUT : undefined);
-      $element[0][method](params);
+
+      if (iOS()) {
+        before('h5p-fullscreen-ios');
+        window.parent.postMessage('enterFullScreen', '*');
+      } else {
+        $element[0][method](params);
+      }
     }
 
     // Allows everone to exit
@@ -678,11 +684,21 @@ H5P.fullScreen = function ($element, instance, exitCallback, body, forceSemiFull
         document.mozCancelFullScreen();
       }
       else {
+        done('h5p-fullscreen');
         document[H5P.fullScreenBrowserPrefix + 'ExitFullscreen']();
+        if (iOS()) {
+          done('h5p-fullscreen-ios');
+          window.parent.postMessage('exitFullScreen', '*')
+        }
       }
     };
   }
 };
+
+function iOS() {
+    return ['iPad Simulator', 'iPhone Simulator', 'iPod Simulator', 'iPad', 'iPhone', 'iPod'].includes(navigator.platform)
+      || (navigator.userAgent.includes("Mac") && "ontouchend" in document)
+  }
 
 (function () {
   /**
